@@ -31,14 +31,26 @@ periodicActivity(); //call the periodicActivity function
 
 function periodicActivity()
 {
-  myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
-  ledState = !ledState; //invert the ledState
-  setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
-    //increasefreq = (timeout == 1000)?1:0;  
-    if(timeout < 1000){
+    myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
+    ledState = !ledState; //invert the ledState
+    setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
+    
+    //increasefreq = (timeout == 1000)?1:0;  //determine if frequency is decreasing or increasing
+    console.log("timeout =", timeout);  
+    console.log("freQ+ =", increasefreq);
+
+    //determine direction of frequency
+    if(timeout == 1000){
+        increasefreq = false;
+    }
+    if(timeout == 100){
+        increasefreq = true;
+    }
+    
+    //increases frequency if timeout <1000, otherwise resets to 100
+    if(increasefreq){
         timeout += 100;
     }else{
-        timeout = 100;
+        timeout -= 100;
     }
-    console.log("timeout =", timeout);
 }
