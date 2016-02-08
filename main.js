@@ -29,9 +29,16 @@ var increasefreq = true;
 
 periodicActivity(); //call the periodicActivity function
 
+function ()
+{
+    
+}
+
 function periodicActivity()
 {
-    myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
+    
+    setTimeout
+    /*myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
     ledState = !ledState; //invert the ledState
     setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
     
@@ -52,5 +59,5 @@ function periodicActivity()
         timeout += 100;
     }else{
         timeout -= 100;
-    }
+    }*/
 }
