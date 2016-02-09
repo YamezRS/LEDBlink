@@ -19,61 +19,68 @@ Article: https://software.intel.com/en-us/html5/articles/intel-xdk-iot-edition-n
 var mraa = require('mraa'); //require mraa
 console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to the Intel XDK console
 
-//Initialize LEDs
-var LED11 = new mraa.Gpio(11); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
-var LED12 = new mraa.Gpio(12); 
-var LED13 = new mraa.Gpio(13); 
-LED11.dir(mraa.DIR_OUT); //set the gpio direction to output
-LED12.dir(mraa.DIR_OUT); //set the gpio direction to output
-LED13.dir(mraa.DIR_OUT); //set the gpio direction to output
+//Initialize LED array
+var ledArray = [];
 
+for (var i = 11; i < 14; i++) {
+    ledArray[i] = new mraa.Gpio(i);
+    ledArray[i].dir(mraa.DIR_OUT);
+}
+console.log(ledArray);
+
+//Initialize Timer Array
+var timerArray = [];
+timerArray[11] = 1500;
+timerArray[12] = 3500;
+timerArray[13] = 5000;
+console.log(timerArray);
+
+
+//misc variables
+var ledState = true;
 var timeout = 5000; //variable timeout for LED flip command
 var increasefreq = true;
 mainLoop(); //call the periodicActivity function
 
-function TriggerAllLED()
-{
-    LED11.write(1);
-    LED12.write(1);
-    LED13.write(1);
-    console.log("ALL LED ON!");  
-}
 
 function TriggerLED11()
 {
-    LED11.write(1);
+    ledArray[11].write(1);
     console.log("LED 11 ON!");  
     
 }
 
 function TriggerLED12()
 {
-    LED12.write(1);
+    ledArray[12].write(1);
     console.log("LED 12 ON!");  
     
 }
 
 function TriggerLED13()
 {
-    LED13.write(1);
+    ledArray[13].write(1);
     console.log("LED 13 ON!");  
     
 }
 
 function setLEDtimer()
 {
-    setTimeout(TriggerLED11,5000);
-    setTimeout(TriggerLED12,10000);
-    setTimeout(TriggerLED13,3000);
-    console.log("Timers Set", timeout); 
+    setTimeout(TriggerLED11,timerArray[11]);
+    setTimeout(TriggerLED12,timerArray[12]);
+    setTimeout(TriggerLED13,timerArray[13]);
+    console.log("Timers Set"); 
 }
 
 function mainLoop()
 {
-    LED11.write(0);
-    LED12.write(0);
-    LED13.write(0);
-    console.log("ALL LED OFF!");  
+    //Loop to toggle GPIO 11, 12, 13 LED states
+    
+    for (var i = 11; i < 14; i++) {
+        ledArray[i].write(0);
+    }
+    //ledState = !ledState;
+    //setTimeout(mainLoop,1500); //repeat loop every 1500ms
     setLEDtimer();
     
     /*
