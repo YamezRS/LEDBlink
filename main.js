@@ -19,34 +19,61 @@ Article: https://software.intel.com/en-us/html5/articles/intel-xdk-iot-edition-n
 var mraa = require('mraa'); //require mraa
 console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to the Intel XDK console
 
-//var myOnboardLed = new mraa.Gpio(3, false, true); //LED hooked up to digital pin (or built in pin on Galileo Gen1)
-var myOnboardLed = new mraa.Gpio(13); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
+//Initialize LEDs
+var LED11 = new mraa.Gpio(11); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
+var LED12 = new mraa.Gpio(12); 
+var LED13 = new mraa.Gpio(13); 
+LED11.dir(mraa.DIR_OUT); //set the gpio direction to output
+LED12.dir(mraa.DIR_OUT); //set the gpio direction to output
+LED13.dir(mraa.DIR_OUT); //set the gpio direction to output
 
-myOnboardLed.dir(mraa.DIR_OUT); //set the gpio direction to output
-var ledState = false; //Boolean to hold the state of Led
-var timeout = 10000; //variable timeout for LED flip command
+var timeout = 5000; //variable timeout for LED flip command
 var increasefreq = true;
-myOnboardLed.write(0); 
 mainLoop(); //call the periodicActivity function
 
-function TriggerLED()
+function TriggerAllLED()
 {
-    ledState = true;
-    myOnboardLed.write(ledState?1:0);
-    console.log("LED ON!",ledState);  
+    LED11.write(1);
+    LED12.write(1);
+    LED13.write(1);
+    console.log("ALL LED ON!");  
+}
+
+function TriggerLED11()
+{
+    LED11.write(1);
+    console.log("LED 11 ON!");  
+    
+}
+
+function TriggerLED12()
+{
+    LED12.write(1);
+    console.log("LED 12 ON!");  
+    
+}
+
+function TriggerLED13()
+{
+    LED13.write(1);
+    console.log("LED 13 ON!");  
     
 }
 
 function setLEDtimer()
 {
-    setTimeout(TriggerLED,timeout);
-    console.log("TimerSet", timeout); 
+    setTimeout(TriggerLED11,5000);
+    setTimeout(TriggerLED12,10000);
+    setTimeout(TriggerLED13,3000);
+    console.log("Timers Set", timeout); 
 }
 
 function mainLoop()
 {
-    myOnboardLed.write(ledState?1:0);
-    console.log("LED OFF!", ledState);  
+    LED11.write(0);
+    LED12.write(0);
+    LED13.write(0);
+    console.log("ALL LED OFF!");  
     setLEDtimer();
     
     /*
