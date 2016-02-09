@@ -23,22 +23,35 @@ console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to t
 var myOnboardLed = new mraa.Gpio(13); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
 
 myOnboardLed.dir(mraa.DIR_OUT); //set the gpio direction to output
-var ledState = true; //Boolean to hold the state of Led
-var timeout = 1000; //variable timeout for LED flip command
+var ledState = false; //Boolean to hold the state of Led
+var timeout = 10000; //variable timeout for LED flip command
 var increasefreq = true;
+myOnboardLed.write(0); 
+mainLoop(); //call the periodicActivity function
 
-periodicActivity(); //call the periodicActivity function
-
-function ()
+function TriggerLED()
 {
+    ledState = true;
+    myOnboardLed.write(ledState?1:0);
+    console.log("LED ON!",ledState);  
     
 }
 
-function periodicActivity()
+function setLEDtimer()
 {
+    setTimeout(TriggerLED,timeout);
+    console.log("TimerSet", timeout); 
+}
+
+function mainLoop()
+{
+    myOnboardLed.write(ledState?1:0);
+    console.log("LED OFF!", ledState);  
+    setLEDtimer();
     
-    setTimeout
-    /*myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
+    /*
+    
+    myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
     ledState = !ledState; //invert the ledState
     setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
     
@@ -59,5 +72,7 @@ function periodicActivity()
         timeout += 100;
     }else{
         timeout -= 100;
-    }*/
+        
+    */
+    
 }
