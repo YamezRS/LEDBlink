@@ -30,7 +30,7 @@ console.log(ledArray);
 
 //Initialize Timer Array
 var timerArray = [];
-timerArray[11] = 1500;
+timerArray[11] = 5000;
 timerArray[12] = 3500;
 timerArray[13] = 5000;
 console.log(timerArray);
@@ -40,16 +40,26 @@ console.log(timerArray);
 var ledState = true;
 var timeout = 5000; //variable timeout for LED flip command
 var increasefreq = true;
+var LEDnum = 11; //used for Trigger LED control
 mainLoop(); //call the periodicActivity function
+
+
+function TriggerLED(LEDindex)
+{
+    ledArray[LEDindex].write(1);
+    console.log("LED ON!", LEDindex); 
+    
+}
 
 
 function TriggerLED11()
 {
     ledArray[11].write(1);
-    console.log("LED 11 ON!");  
+    console.log("LED 11 ON!"); 
     
 }
 
+/*
 function TriggerLED12()
 {
     ledArray[12].write(1);
@@ -63,12 +73,15 @@ function TriggerLED13()
     console.log("LED 13 ON!");  
     
 }
+*/
 
 function setLEDtimer()
 {
-    setTimeout(TriggerLED11,timerArray[11]);
-    setTimeout(TriggerLED12,timerArray[12]);
-    setTimeout(TriggerLED13,timerArray[13]);
+    for (var i = 11; i < 14; i++) {
+        
+        setTimeout(TriggerLED,timerArray[i],i);
+        
+    }
     console.log("Timers Set"); 
 }
 
@@ -79,34 +92,16 @@ function mainLoop()
     for (var i = 11; i < 14; i++) {
         ledArray[i].write(0);
     }
-    //ledState = !ledState;
-    //setTimeout(mainLoop,1500); //repeat loop every 1500ms
+    
     setLEDtimer();
+    //setTimeout(TriggerLED11,ledArray[11]);
+    //setTimeout(TriggerLED,timerArray[11],11);
+    
     
     /*
-    
     myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
     ledState = !ledState; //invert the ledState
     setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
-    
-    //increasefreq = (timeout == 1000)?1:0;  //determine if frequency is decreasing or increasing
-    console.log("timeout =", timeout);  
-    console.log("freQ+ =", increasefreq);
-
-    //determine direction of frequency
-    if(timeout == 1000){
-        increasefreq = false;
-    }
-    if(timeout == 100){
-        increasefreq = true;
-    }
-    
-    //increases frequency if timeout <1000, otherwise resets to 100
-    if(increasefreq){
-        timeout += 100;
-    }else{
-        timeout -= 100;
-        
     */
     
 }
