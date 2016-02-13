@@ -35,46 +35,30 @@ timerArray[12] = 3500;
 timerArray[13] = 5000;
 console.log(timerArray);
 
+//Time to burn 
+burnTime = 500;
 
-//misc variables
-var ledState = true;
-var timeout = 5000; //variable timeout for LED flip command
-var increasefreq = true;
-var LEDnum = 11; //used for Trigger LED control
-mainLoop(); //call the periodicActivity function
+mainLoop(); //call the main function
 
 
+//funtion triggers LEDs on
 function TriggerLED(LEDindex)
 {
     ledArray[LEDindex].write(1);
-    console.log("LED ON!", LEDindex); 
-    
+    console.log("LED ON!", LEDindex);
+    setTimeout(LEDoff,burnTime,LEDindex);
+
 }
-
-
-function TriggerLED11()
+        
+//funtion triggers LEDs off
+function LEDoff(LEDindex)
 {
-    ledArray[11].write(1);
-    console.log("LED 11 ON!"); 
+    ledArray[LEDindex].write(0);
+    console.log("LED OFF!", LEDindex);
     
 }
 
-/*
-function TriggerLED12()
-{
-    ledArray[12].write(1);
-    console.log("LED 12 ON!");  
-    
-}
-
-function TriggerLED13()
-{
-    ledArray[13].write(1);
-    console.log("LED 13 ON!");  
-    
-}
-*/
-
+//function sets timers for leds based on ms values in timer array
 function setLEDtimer()
 {
     for (var i = 11; i < 14; i++) {
@@ -85,18 +69,15 @@ function setLEDtimer()
     console.log("Timers Set"); 
 }
 
+//
 function mainLoop()
 {
-    //Loop to toggle GPIO 11, 12, 13 LED states
-    
+    //turn LEDs off
     for (var i = 11; i < 14; i++) {
         ledArray[i].write(0);
     }
     
     setLEDtimer();
-    //setTimeout(TriggerLED11,ledArray[11]);
-    //setTimeout(TriggerLED,timerArray[11],11);
-    
     
     /*
     myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
