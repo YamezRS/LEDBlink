@@ -19,18 +19,72 @@ Article: https://software.intel.com/en-us/html5/articles/intel-xdk-iot-edition-n
 var mraa = require('mraa'); //require mraa
 console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to the Intel XDK console
 
-//var myOnboardLed = new mraa.Gpio(3, false, true); //LED hooked up to digital pin (or built in pin on Galileo Gen1)
-var myOnboardLed = new mraa.Gpio(13); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
+//Initialize LED array
+var ledArray = [];
 
-myOnboardLed.dir(mraa.DIR_OUT); //set the gpio direction to output
-var ledState = true; //Boolean to hold the state of Led
-var timeout = 1000; //variable timeout for LED flip command
+for (var i = 11; i < 14; i++) {
+    ledArray[i] = new mraa.Gpio(i);
+    ledArray[i].dir(mraa.DIR_OUT);
+}
+console.log(ledArray);
+
+//Initialize Timer Array
+var timerArray = [];
+timerArray[11] = 1500;
+timerArray[12] = 3500;
+timerArray[13] = 5000;
+console.log(timerArray);
+
+
+//misc variables
+var ledState = true;
+var timeout = 5000; //variable timeout for LED flip command
 var increasefreq = true;
+mainLoop(); //call the periodicActivity function
 
-periodicActivity(); //call the periodicActivity function
 
-function periodicActivity()
+function TriggerLED11()
 {
+    ledArray[11].write(1);
+    console.log("LED 11 ON!");  
+    
+}
+
+function TriggerLED12()
+{
+    ledArray[12].write(1);
+    console.log("LED 12 ON!");  
+    
+}
+
+function TriggerLED13()
+{
+    ledArray[13].write(1);
+    console.log("LED 13 ON!");  
+    
+}
+
+function setLEDtimer()
+{
+    setTimeout(TriggerLED11,timerArray[11]);
+    setTimeout(TriggerLED12,timerArray[12]);
+    setTimeout(TriggerLED13,timerArray[13]);
+    console.log("Timers Set"); 
+}
+
+function mainLoop()
+{
+    //Loop to toggle GPIO 11, 12, 13 LED states
+    
+    for (var i = 11; i < 14; i++) {
+        ledArray[i].write(0);
+    }
+    //ledState = !ledState;
+    //setTimeout(mainLoop,1500); //repeat loop every 1500ms
+    setLEDtimer();
+    
+    /*
+    
     myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
     ledState = !ledState; //invert the ledState
     setTimeout(periodicActivity, timeout); //call the indicated function after 1 second (1000 milliseconds)
@@ -52,5 +106,7 @@ function periodicActivity()
         timeout += 100;
     }else{
         timeout -= 100;
-    }
+        
+    */
+    
 }
